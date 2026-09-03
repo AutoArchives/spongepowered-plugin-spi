@@ -31,7 +31,10 @@ import java.util.Optional;
 
 /**
  * Represents an entity that can be queried for {@link URI resources}.
+ *
+ * @deprecated Use {@link org.spongepowered.plugin.discovery.PluginResource}
  */
+@Deprecated(forRemoval = true, since = "0.5.2")
 public interface ResourceQueryable {
 
     /**
@@ -40,6 +43,7 @@ public interface ResourceQueryable {
      * @param path The relative path
      * @return The resolved resource location, if available
      */
+    @Deprecated(forRemoval = true, since = "0.5.2")
     Optional<URI> locateResource(final String path);
 
     /**
@@ -48,6 +52,7 @@ public interface ResourceQueryable {
      * @param path The relative path
      * @return The opened resource, if available
      */
+    @Deprecated(forRemoval = true, since = "0.5.2")
     default Optional<InputStream> openResource(final String path) {
         return this.locateResource(path).flatMap(url -> {
             try {

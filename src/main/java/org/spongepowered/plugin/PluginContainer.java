@@ -28,12 +28,17 @@ import org.apache.logging.log4j.Logger;
 import org.spongepowered.plugin.discovery.PluginResource;
 import org.spongepowered.plugin.metadata.PluginMetadata;
 
+import java.io.InputStream;
+import java.net.URI;
+import java.util.Optional;
+
 /**
  * Represents the combination of a {@link PluginMetadata metadata} with its instance.
  * <p>
  * For most vendors, this becomes the representation of the concept of a plugin within
  * their ecosystem.
  */
+@SuppressWarnings("removal")
 public interface PluginContainer extends ResourceQueryable {
 
     /**
@@ -59,11 +64,19 @@ public interface PluginContainer extends ResourceQueryable {
         return this;
     }
 
+    /**
+     * @deprecated Use {@link #resource()} and {@link PluginResource#locate(String)}
+     */
+    @Deprecated(forRemoval = true, since = "0.5.2")
     @Override
     default Optional<URI> locateResource(final String path) {
         return this.resource().locate(path);
     }
 
+    /**
+     * @deprecated Use {@link #resource()} and {@link PluginResource#open(String)}
+     */
+    @Deprecated(forRemoval = true, since = "0.5.2")
     @Override
     default Optional<InputStream> openResource(final String path) {
         return this.resource().open(path);
