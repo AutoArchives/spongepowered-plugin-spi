@@ -25,6 +25,7 @@
 package org.spongepowered.plugin;
 
 import org.apache.logging.log4j.Logger;
+import org.spongepowered.plugin.discovery.PluginResource;
 import org.spongepowered.plugin.metadata.PluginMetadata;
 
 /**
@@ -34,6 +35,11 @@ import org.spongepowered.plugin.metadata.PluginMetadata;
  * their ecosystem.
  */
 public interface PluginContainer extends ResourceQueryable {
+
+    /**
+     * @return The {@link PluginResource plugin resource}
+     */
+    PluginResource resource();
 
     /**
      * @return The {@link PluginMetadata plugin metadata}
@@ -51,5 +57,15 @@ public interface PluginContainer extends ResourceQueryable {
     @Deprecated(forRemoval = true, since = "0.5.0")
     default Object instance() {
         return this;
+    }
+
+    @Override
+    default Optional<URI> locateResource(final String path) {
+        return this.resource().locate(path);
+    }
+
+    @Override
+    default Optional<InputStream> openResource(final String path) {
+        return this.resource().open(path);
     }
 }
