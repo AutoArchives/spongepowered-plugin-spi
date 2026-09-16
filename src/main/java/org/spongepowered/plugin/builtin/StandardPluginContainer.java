@@ -30,9 +30,7 @@ import org.spongepowered.plugin.PluginContainer;
 import org.spongepowered.plugin.discovery.PluginResource;
 import org.spongepowered.plugin.metadata.PluginMetadata;
 
-import java.net.URI;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.StringJoiner;
 
 public class StandardPluginContainer implements PluginContainer {
@@ -52,6 +50,11 @@ public class StandardPluginContainer implements PluginContainer {
     }
 
     @Override
+    public final PluginResource resource() {
+        return this.resource;
+    }
+
+    @Override
     public final PluginMetadata metadata() {
         return this.metadata;
     }
@@ -59,11 +62,6 @@ public class StandardPluginContainer implements PluginContainer {
     @Override
     public final Logger logger() {
         return this.logger;
-    }
-
-    @Override
-    public Optional<URI> locateResource(final String path) {
-        return this.resource.locateResource(path);
     }
 
     @Override

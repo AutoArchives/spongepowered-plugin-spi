@@ -24,8 +24,9 @@
  */
 package org.spongepowered.plugin.discovery;
 
-import org.spongepowered.plugin.ResourceQueryable;
-
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
@@ -33,7 +34,8 @@ import java.util.Optional;
 /**
  * Represents a resource provided by a {@link PluginResourceLocator locator}.
  */
-public interface PluginResource extends ResourceQueryable {
+@SuppressWarnings({"removal", "DeprecatedIsStillUsed"})
+public interface PluginResource extends org.spongepowered.plugin.ResourceQueryable {
 
     /**
      * @deprecated Use {@link #paths()} instead
@@ -58,4 +60,46 @@ public interface PluginResource extends ResourceQueryable {
      * @return The value or {@link Optional#empty()} if not found
      */
     Optional<String> property(final String key);
+
+    /**
+     * Resolves the location of a bundled resource, given a relative path.
+     *
+     * @param path The relative path
+     * @return The resolved location, if available
+     */
+    Optional<URI> locate(final String path);
+
+    /**
+     * Opens an {@link InputStream} of the location of a bundled resource, given a relative path.
+     *
+     * @param path The relative path
+     * @return The opened bundled resource, if available
+     */
+    default Optional<InputStream> open(final String path) {
+        return this.locate(path).flatMap(url -> {
+            try {
+                return Optional.of(url.toURL().openStream());
+            } catch (final IOException ignored) {
+                return Optional.empty();
+            }
+        });
+    }
+
+    /**
+     * @deprecated Use {@link #locate(String)}
+     */
+    @Deprecated(forRemoval = true, since = "0.5.2")
+    @Override
+    default Optional<URI> locateResource(final String path) {
+        return this.locate(path);
+    }
+
+    /**
+     * @deprecated Use {@link #open(String)}
+     */
+    @Deprecated(forRemoval = true, since = "0.5.2")
+    @Override
+    default Optional<InputStream> openResource(final String path) {
+        return this.open(path);
+    }
 }
